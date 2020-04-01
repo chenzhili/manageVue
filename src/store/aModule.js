@@ -7,6 +7,9 @@ export default {
     mutations:{
         [aModule.mutations.INCREMENT](state){
             state.countA++;
+        },
+        ["aaa"](state) {
+            state.countA++;
         }
     },
     actions:{

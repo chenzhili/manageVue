@@ -15,6 +15,9 @@ import './request/reqMixin';
 // 全局 注册 的 自定义组件
 import './components/index'
 
+// 数据模拟
+import './mockjs'
+
 Vue.config.productionTip = false
 
 new Vue({

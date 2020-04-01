@@ -5,6 +5,8 @@
   */
 
 import axios from 'axios';
+import nprogress from 'nprogress'
+process.env.NODE_ENV === "development" && import('nprogress/nprogress.css')
 import router from '../router';
 import store from '../store';
 // 这个要用 element-ui 替代
@@ -71,7 +73,7 @@ const errorHandle = (status, other) => {
             break;
         // 403 token过期
         // 清除token并跳转登录页
-        case 403:
+        case 405:
             tip('登录过期，请重新登录', 'warning');
             localStorage.removeItem('token');
             store.commit('loginSuccess', null);
@@ -109,6 +111,7 @@ function changeNetWorkStatus(boolean) {
   */
 instance.interceptors.request.use(
     config => {
+        nprogress.start();
         // 登录流程控制中，根据本地是否存在token判断用户的登录情况
         // 但是即使token存在，也有可能token是过期的，所以在每次的请求头中携带token
         // 后台根据携带的token判断用户的登录情况，并返回给我们对应的状态码
@@ -127,10 +130,15 @@ instance.interceptors.request.use(
 instance.interceptors.response.use(
     // 请求成功
     // 这里 成功可能不只是这个状态码
-    res => res.status === 200 ? Promise.resolve(res) : Promise.reject(res),
+    res => {
+        nprogress.done();
+        return res.status === 200 ? Promise.resolve(res) : Promise.reject(res);
+    },
     // 请求失败
     error => {
+        nprogress.done();
         const { response } = error;
+        console.log(response);
         if (response) {
             // 请求已发出，但是不在2xx的范围
             errorHandle(response.status, response.data.message);

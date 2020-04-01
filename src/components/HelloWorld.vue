@@ -5,9 +5,10 @@
   </div>
 </template>
 <script>
-import { mapState/* , mapMutations, createNamespacedHelpers */ } from 'vuex'
+import { mapState, mapMutations, createNamespacedHelpers } from 'vuex'
 import { parents } from '../store/constJSON'
-console.log(mapState(['list']));
+const { mapMutations:amapMutations } = createNamespacedHelpers("aModule");
+console.log(amapMutations(['aaa'])); 
 export default {
   name: "HelloWorld",
   props: ["id"],
@@ -37,7 +38,7 @@ export default {
     }
   },
   mounted() {
-    // console.log(this);
+    console.log('对应store的值', this.$store);
   }
 };
 </script>

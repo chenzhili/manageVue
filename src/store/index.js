@@ -28,6 +28,7 @@ const store = ((Vuex) => {
       modules[moduleName] = module;
     }
   })
+  console.log(modules);
   return new Vuex.Store({
     // 严格按照 commit 的方法进行 state 的修改，不然会报错
     strict: process.env.NODE_ENV !== 'production',
@@ -35,7 +36,8 @@ const store = ((Vuex) => {
     state: {
       count: 1,
       network: true,
-      list: [{title:"test", id:'12323'}]
+      list: [{title:"test", id:'12323'}],
+      auth: true
     },
 
     // 这个是唯一能够改变 state 状态的 地方
@@ -52,6 +54,11 @@ const store = ((Vuex) => {
       },
       [parents.mutations.ADD_TO_CART](state){
         state.list.push({title:"aaaa", id:"2"});
+      },
+
+      // 测试 用的 写的不是很严格
+      changeAuth(state, boolean = false) {
+        state.auth = boolean;
       }
     },
 
@@ -74,15 +81,18 @@ const store = ((Vuex) => {
             若需要在全局命名空间内分发 action 或提交 mutation，将 { root: true } 作为第三参数传给 dispatch 或 commit 即可
 
     验证的结果：
-        state 在 模块 中的 不管 加没加 namespaced 他的 文件都在 vue 的 实例 this.$store 下的 key(模块)的 目录下
+        state 在 模块 中的 不管 加没加 namespaced 他的 文件都在 vue 的 实例 this.$store 下的 key(模块下)的 目录下
 
         getters、actions、mutations 就有区别了：
         模块内部的 action、mutation 和 getter 是注册在全局命名空间的——这样使得多个模块能够对同一 mutation 或 action 作出响应
-        （意思就是指 没有 namespaced 为 false的 时候，在实例 上的 获取方法，this.$store.模块下的方法 ）
+        （意思就是指 没有 namespaced 为 false的 时候，在实例 上的 获取方法，this.$store.[action | mutation | getter].模块下的方法 ）
 
-        如果 namespaced 为 true时，访问的 方式 this.$store.模块的目录.模块下的方法
+        如果 namespaced 为 true时，访问的 方式 this.$store._mutations['aModule/aaa']
 
-        简写：const { mapState:aMapState, mapActions:aMapActions } = createNamespacedHelpers('aModule') 在 app.vue 中的写法；这种 必选要namespaced = true
+        简写：const { mapState:aMapState, mapMutation:aMapMutation } = createNamespacedHelpers('aModule') 在 app.vue 中的写法；这种 必选要namespaced = true
+        methods:{
+          ...aMapMutation(["aaa"])
+        }
 */
 
 export default store;

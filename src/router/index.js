@@ -2,7 +2,9 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import { type } from '../utils'
 
-import config from './config'
+import config, {asyncLoadRoutes} from './config'
+
+import store from '../store';
 
 Vue.use(VueRouter);
 
@@ -126,7 +128,7 @@ const routesNews = resultRoutes(config);
 
 /* 配置 首次进入 时 匹配的 从定向 */
 routesNews.unshift({
-  path: '*',
+  path: '/',
   redirect: '/home/1/1'
 });
 
@@ -143,9 +145,16 @@ const router = new VueRouter({
 });
 // 路由进入 的 钩子
 router.beforeEach((to, from, next) => {
-  // ...
-  // 钩子的 完成 需要 用到的 resolve
-  next();
+  // 不能对 同一个 路由进行 重复添加
+  if (to.path === '/about' && store.state.auth === true) {
+    store.commit('changeAuth');
+    router.addRoutes(resultRoutes(asyncLoadRoutes));
+    next({ ...to, replace: true }) // hack方法 确保addRoutes已完成
+  }else{
+    next();
+  }
+  // // 钩子的 完成 需要 用到的 resolve
+  // next();
 })
 // 路由 退出的 钩子
 router.afterEach((to, from) => {

@@ -9,6 +9,12 @@ export default {
     articleList(cancelTokenIns) {
         return http(methods.get, '/services', {}, cancelTokenIns);
     },
+
+    // 测试mockjs 是否能截取
+    getMoney(params) {
+        return http(methods.get,'/money/get', params)
+    },
+
     // 新闻详情,演示
     articleDetail(id, params, cancelTokenIns) {
         return http(methods.get, '/topic', { id, ...params }, cancelTokenIns)

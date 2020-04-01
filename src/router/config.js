@@ -94,11 +94,6 @@ const config = [
         // ]
     },
     {
-        keyword: 'about',
-        component: () => import(/*  */'@/views/About.vue'),
-        // async: false,
-    },
-    {
         keyword: 'test',
         exact: true,
         component:  () => import(/*  */'@/views/Test.vue'),
@@ -115,6 +110,15 @@ const config = [
             },
         ]
     }
+]
+
+/* 动态载入的路由 包括了 权限 在内的 */
+export const asyncLoadRoutes = [
+    {
+        keyword: 'about',
+        component: () => import(/*  */'@/views/About.vue'),
+        // async: false,
+    },
 ]
 
 export default config;
