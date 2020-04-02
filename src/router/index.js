@@ -5,6 +5,7 @@ import { type } from '../utils'
 import config, {asyncLoadRoutes} from './config'
 
 import store from '../store';
+import {permission} from '../store/constJSON'
 
 Vue.use(VueRouter);
 
@@ -146,8 +147,8 @@ const router = new VueRouter({
 // 路由进入 的 钩子
 router.beforeEach((to, from, next) => {
   // 不能对 同一个 路由进行 重复添加
-  if (to.path === '/about' && store.state.auth === true) {
-    store.commit('changeAuth');
+  if (to.path === '/about' && store.state.permission.userInfo.del === true) {
+    store.commit(permission.mutations.CHANGE_AUTH, 'del');
     router.addRoutes(resultRoutes(asyncLoadRoutes));
     next({ ...to, replace: true }) // hack方法 确保addRoutes已完成
   }else{

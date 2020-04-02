@@ -37,7 +37,6 @@ const store = ((Vuex) => {
       count: 1,
       network: true,
       list: [{title:"test", id:'12323'}],
-      auth: true
     },
 
     // 这个是唯一能够改变 state 状态的 地方
@@ -56,10 +55,10 @@ const store = ((Vuex) => {
         state.list.push({title:"aaaa", id:"2"});
       },
 
-      // 测试 用的 写的不是很严格
-      changeAuth(state, boolean = false) {
-        state.auth = boolean;
-      }
+      // // 测试 用的 写的不是很严格
+      // changeAuth(state, boolean = false) {
+      //   state.auth = boolean;
+      // }
     },
 
     // 跟 vue 实例 内的 computed 一样，但是 当他 (state,getters)=>params=>fun 这时候 不会 缓存

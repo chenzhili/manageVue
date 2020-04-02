@@ -2,6 +2,7 @@
   <div class="home">
     <img alt="Vue logo" src="../assets/logo.png" />
     <HelloWorld id="123" />
+    <el-button v-permission="test">test权限</el-button>
     <ul>
       <li v-for="(item,key) of list" :key="key">{{item.low}}</li>
     </ul>
@@ -21,7 +22,7 @@ export default {
   },
   data() {
     return {
-      test: "test",
+      test: "del",
       list: []
     };
   },

@@ -1,7 +1,8 @@
 import aModule from './aModule'
 import bModule from './bModule'
+import permission from './permission'
 
-export { aModule , bModule };
+export { aModule , bModule, permission };
 
 export const parents = Object.freeze({
     mutations: {

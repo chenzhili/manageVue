@@ -32,8 +32,7 @@ import {
     TimePicker,
     Popover,
     Tooltip,
-    Breadcrumb,
-    BreadcrumbItem,
+    
     Form,
     FormItem,
     Tabs,
@@ -80,6 +79,8 @@ import {
     MessageBox,
     Loading,
     Message,
+    Breadcrumb,
+    BreadcrumbItem,
 } from 'element-ui';
 
 /* Vue.use(Pagination);
@@ -113,8 +114,7 @@ Vue.use(TimeSelect);
 Vue.use(TimePicker);
 Vue.use(Popover);
 Vue.use(Tooltip);
-Vue.use(Breadcrumb);
-Vue.use(BreadcrumbItem);
+
 Vue.use(Form);
 Vue.use(FormItem);
 Vue.use(Tabs);
@@ -155,9 +155,12 @@ Vue.use(Calendar);
 Vue.use(Backtop);
 Vue.use(PageHeader);
 Vue.use(CascaderPanel); */
-console.log('执行');
+
 Vue.use(Button);
 Vue.use(Loading.directive);
+Vue.use(Breadcrumb);
+Vue.use(BreadcrumbItem);
+
 function MessApi() { }
 MessApi.install = () => {
     Vue._message = Message;
