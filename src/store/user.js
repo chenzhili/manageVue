@@ -38,7 +38,7 @@ export default {
     },
     actions: {
         //登出
-        [user.actions.logout]({ commit, reqData }) {
+        [user.actions.LogOut]({ commit, reqData }) {
             return new Promise((resolve, reject) => {
                 logout(reqData).then(response => {
                     commit('SET_ROLES', [])

@@ -8,10 +8,10 @@ import { type } from '../utils'
 import config, { asyncLoadRoutes } from './config'
 
 import store from '../store';
-import { permission } from '../store/constJSON'
-import user from "@/request/moduleAPI/user";
+import { permission, user } from '../store/constJSON'
+import User from "@/request/moduleAPI/user";
 
-const {getUserInfo} = user;
+const {getUserInfo} = User;
 import {
   setTitle
 } from '@/utils/mUtils' // 设置浏览器头部标题
@@ -176,7 +176,7 @@ router.beforeEach((to, from, next) => {
      if (store.getters.roles.length === 0) {
        let token = getToken('Token');
        getUserInfo({"token":token}).then().then(res => { // 根据token拉取用户信息
-         let userList = res.data.userList;
+         let userList = res.data.data.userList;
          store.commit("SET_ROLES",userList.roles);
          store.commit("SET_NAME",userList.name);
          store.commit("SET_AVATAR",userList.avatar);
@@ -185,7 +185,7 @@ router.beforeEach((to, from, next) => {
            next({ ...to, replace: true }) // hack方法 确保addRoutes已完成
          })
        }).catch((err) => {
-         store.dispatch('LogOut').then(() => {
+         store.dispatch(user.actions.LogOut).then(() => {
            Vue._message.error(err || 'Verification failed, please login again')
            next({ path: '/' })
          })
