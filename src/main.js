@@ -21,11 +21,17 @@ import '@/mockjs'
 // 权限的指令
 import '@/directive/permission'
 
+// i18n国际化
+import i18n from "@/lang";
+
+import 'cps/iconSvg'
+
 Vue.config.productionTip = false
 
 new Vue({
   // mixins: [reqMixin],
   router,
+  i18n,
   store,
   render: h => h(App)
 }).$mount('#app')

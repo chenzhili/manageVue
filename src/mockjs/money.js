@@ -42,4 +42,95 @@ export default {
       }
     }
   },
+  /**
+   * 增加资金信息
+   * @param username, address, createTime, income, pay , accoutCash, incomePayType
+   * @return {{code: number, data: {message: string}}}
+   */
+  createMoney: config => {
+    const { username, address, income, pay , accoutCash, incomePayType,tableAddress } = mUtils.param2Obj(config.url)
+    List.unshift({
+      id: Mock.Random.guid(),
+      username: username,
+      address: address,
+      tableAddress:tableAddress,
+      createTime: Mock.Random.now(),
+      income: income,
+      pay: pay,
+      accoutCash: accoutCash,
+      incomePayType: incomePayType
+    })
+    return {
+      code: 200,
+      data: {
+        message: '添加成功'
+      }
+    }
+  },
+  /**
+   * 删除用户
+   * @param id
+   * @return {*}
+   */
+  deleteMoney: config => {
+    const { id } = mUtils.param2Obj(config.url)
+    if (!id) {
+      return {
+        code: -999,
+        message: '参数不正确'
+      }
+    } else {
+      List = List.filter(u => u.id !== id)
+      return {
+        code: 200,
+        data: {
+          message: '删除成功'
+        }
+      }
+    }
+  },
+  /**
+   * 批量删除
+   * @param config
+   * @return {{code: number, data: {message: string}}}
+   */
+  batchremoveMoney: config => {
+    console.log(config);
+    // console.log(mUtils.param2Obj(config.url));
+    let { ids } = mUtils.param2Obj(config.url)
+    console.log(ids);
+    ids = ids.split(',')
+    List = List.filter(u => !ids.includes(u.id))
+    return {
+      code: 200,
+      data: {
+        message: '批量删除成功'
+      }
+    }
+  },
+  /**
+   * 修改用户
+   * @param id, name, addr, age, birth, sex
+   * @return {{code: number, data: {message: string}}}
+   */
+  updateMoney: config => {
+    const { id,username, address, income, pay , accoutCash, incomePayType } = mUtils.param2Obj(config.url)
+    List.some(u => {
+      if (u.id === id) {
+        u.username = username
+        u.address = address
+        u.income = income
+        u.pay = pay
+        u.accoutCash = accoutCash
+        u.incomePayType = incomePayType
+        return true
+      }
+    })
+    return {
+      code: 200,
+      data: {
+        message: '编辑成功'
+      }
+    }
+  }
 }

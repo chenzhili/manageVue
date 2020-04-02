@@ -39,32 +39,62 @@
         beforeEnter: (to, from, next) => {}
     }
 ];
+/* 
+	{ path: '/login', name: 'login', component: () => import('@/page/login'), hidden: true },
+	{ path: '/404', component: () => import('@/page/errorPage/404'), hidden: true },
+	{ path: '/401', component: () => import('@/page/errorPage/401'), hidden: true },
+	{
+		path: '/index',
+		name: 'index',
+		component: Layout,
+		meta: {
+			title: '首页',
+			icon: 'icondashboard',
+		},
+		noDropdown: true,
+		children: [
+			{
+				path: 'index',
+				meta: {
+					title: '首页',
+					icon: 'icondashboard',
+					routerType: 'leftmenu'
+				},
+				component: () => import('@/page/index/index'),
+			}
+		]
+	}
 */
-// const routes = [
-//   {
-//     path: '/:id/:test',
-//     name: 'Home',
-//     components: {
-//       default: () => import('../views/Home.vue'),
-//       about: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
-
-//     }
-//   },
-//   {
-//     path: '/about',
-//     name: 'About',
-//     // route level code-splitting
-//     // this generates a separate chunk (about.[hash].js) for this route
-//     // which is lazy-loaded when the route is visited.
-//     component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
-//   }
-// ]
+// 布局
+import { Layout } from "@/layout";
 // 如果 路由的 数据 相对 比较多了 后，就以 单独模块 配置导入的方式
 const config = [
     {
         keyword: 'login',
-        component: () => import('@/views/Login.vue')
+        component: () => import('@/views/Login'),
+        hidden: true 
     },
+    {
+		keyword: 'index',
+		component: Layout,
+		meta: {
+			title: '首页',
+			icon: 'icondashboard',
+		},
+		children: [
+			{
+				keyword: 'index',
+				meta: {
+					title: '首页',
+					icon: 'icondashboard',
+					routerType: 'leftmenu'
+				},
+				component: () => import('@/views/index/index'),
+			}
+		]
+    },
+    
+
     {
         keyword: 'home',
         query: ['id', 'test'],

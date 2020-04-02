@@ -25,7 +25,7 @@
     }
 </script>
 
-<style scoped lang='less'>
+<style scoped lang='scss'>
     .fade-enter-active,
     .fade-leave-active {
         transition: opacity .3s

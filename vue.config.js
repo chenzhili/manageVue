@@ -1,3 +1,7 @@
+const path = require("path")
+const resolve = dir => {
+    return path.join(__dirname, dir);
+  };
 module.exports = {
     devServer: {
         port: '8777',
@@ -11,5 +15,12 @@ module.exports = {
                 // }
             }
         }
-    }
+    },
+    // webpack相关配置
+    chainWebpack: (config) => {
+        config.entry.app = ['./src/main.js']
+        config.resolve.alias
+            .set('@', resolve('src'))
+            .set('cps', resolve('src/components'))
+    },
 }

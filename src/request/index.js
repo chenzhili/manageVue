@@ -6,7 +6,6 @@ const httpModuleConfig = {};
 const reg = /^\.\/([\S\s]+)\.js$/;
 let key = null;
 requireModule.keys().forEach(rc => {
-    console.log(rc);
     key = rc.replace(reg, '$1');
     httpModuleConfig[key] = requireModule(rc).default;
 });
@@ -19,4 +18,3 @@ httpModuleConfig.install = function () {
     })
 }
 Vue.use(httpModuleConfig);
-

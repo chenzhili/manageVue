@@ -1,27 +1,47 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
+import NProgress from 'nprogress' // Progress 进度条
+process.env.NODE_ENV === "development" && import('nprogress/nprogress.css')
+
 import { type } from '../utils'
 
-import config, {asyncLoadRoutes} from './config'
+import config, { asyncLoadRoutes } from './config'
 
 import store from '../store';
-import {permission} from '../store/constJSON'
+import { permission } from '../store/constJSON'
+import user from "@/request/moduleAPI/user";
+
+const {getUserInfo} = user;
+import {
+  setTitle
+} from '@/utils/mUtils' // 设置浏览器头部标题
+
+// 布局
+import { Layout } from "@/layout";
+
+
+import { getToken } from '@/utils/auth' // 验权(从cookie中获取)
+function hasPermission(roles, permissionRoles) {
+  if (roles.indexOf('admin') >= 0) return true 
+  if (!permissionRoles) return true
+  return roles.some(role => permissionRoles.indexOf(role) >= 0)
+}
+const whiteList = ['/login'] // 不重定向白名单
 
 Vue.use(VueRouter);
 
 /* 这里 处理 config 获取到的 配置 */
-const requireModules = require.context("../views", true, /.vue$/);
-const reg = /^\.\/([\S\s]+)/;
 const modules = {};
+const reg = /^\.\/([\S\s]+)/;
 let key;
+
+const requireModules = require.context("../views", true, /.vue$/);
 requireModules.keys().forEach(rc => {
-  console.log(rc);
   key = rc.replace(reg, '$1');
   if (rc.indexOf('vue') !== -1) {
     modules[key] = requireModules(rc).default;
   }
 });
-console.log(modules);
 
 function resultRoutes(config) {
   if (type(config) !== 'array' || !config.length) { return []; }
@@ -47,22 +67,13 @@ function recurseRouter(targets, result, root) {
 
     tempObj.path = root === true ? `/${target.keyword}${params}` : `${target.keyword}${params}`;
     if (root === true) {
-      tempObj.name = `${target.keyword.slice(0, 1).toLocaleUpperCase()}${target.keyword.slice(1)}`
+      tempObj.name = type(target.keyword.slice(0, 1)) === 'string' ? `${target.keyword.slice(0, 1).toLocaleUpperCase()}${target.keyword.slice(1)}` : target.keyword;
     }
 
     // 判断 当前 渲染 的是 单个组件 还是 视图型组件
     if (target.components) {
       if (type(target.components) === 'array' && target.components.length) {
-        /* map 对于 遍历获取的时候，只能获取 enumerable 的 值，所以 对于 vue 的实例 可能 不支持，目前看来 是应为 数据 结构 有问题 */
-        /* tempObj.components = target.components.map((com, i) => {
-          const key = i === 0 ? 'default' : com.viewName;
-          const value = com.async === false ? modules[com.component] : () => import(`@/views/${com.component}`);
-          // return { [key]: value};
-          const obj = { [key]: value};
-          console.log(obj);
-          return obj;
-        }); */
-        // 编译后也有问题
+
         const len = target.components.length;
         let i = 0;
         tempObj.components = {};
@@ -103,63 +114,108 @@ function recurseRouter(targets, result, root) {
   });
 }
 
-// const routes = [
-//   {
-//     path: '/home/:id/:test',
-//     name: 'Home',
-//     components: {
-//       default: () => import(`${'../views/Home.vue'}`),
-//       about: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
-
-//     }
-//   },
-//   {
-//     path: '/about',
-//     name: 'About',
-//     // route level code-splitting
-//     // this generates a separate chunk (about.[hash].js) for this route
-//     // which is lazy-loaded when the route is visited.
-//     component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
-//   }
-// ];
-
-// console.log(routes);
-
 const routesNews = resultRoutes(config);
 
 /* 配置 首次进入 时 匹配的 从定向 */
+
 routesNews.unshift({
   path: '/',
-  redirect: '/home/1/1'
+  component: Layout,
+  redirect: '/index/index'
 });
 
 /* 断网的刷新页面 */
 routesNews.push({
   path: '/refresh',
   name: 'Refresh',
-  component: () => import('@/views/NoNetWork.vue')
+  component: () => import('@/views/errorPage/NoNetWork.vue')
+});
+
+/* 访问权限页面 */
+routesNews.push({
+  path: '/401',
+  name: '401',
+  component: () => import('@/views/errorPage/401.vue')
+});
+/* 页面不存在 */
+routesNews.push({
+  path: '/404',
+  name: '404',
+  component: () => import('@/views/errorPage/404.vue')
 });
 
 console.log(routesNews);
 const router = new VueRouter({
   routes: routesNews
 });
+
+
+/* 真实的 权限加载的路由 */
+export const asyncRouterMap = resultRoutes(asyncLoadRoutes);
+
+/* 真实的 同步 路由 */
+const constantRouterMap = routesNews;
+export { constantRouterMap }
+
 // 路由进入 的 钩子
 router.beforeEach((to, from, next) => {
-  // 不能对 同一个 路由进行 重复添加
-  if (to.path === '/about' && store.state.permission.userInfo.del === true) {
-    store.commit(permission.mutations.CHANGE_AUTH, 'del');
-    router.addRoutes(resultRoutes(asyncLoadRoutes));
-    next({ ...to, replace: true }) // hack方法 确保addRoutes已完成
-  }else{
+  // 设置浏览器头部标题
+  const browserHeaderTitle = to.meta.title
+  store.commit('SET_BROWSERHEADERTITLE', {
+    browserHeaderTitle: browserHeaderTitle
+  })
+  console.log('before to');
+ // 点击登录时，拿到了token并存入了cookie,保证页面刷新时,始终可以拿到token
+ if (getToken('Token')) {
+   if(to.path === '/login') {
+    //  next({ path: '/' })  
     next();
-  }
-  // // 钩子的 完成 需要 用到的 resolve
-  // next();
+     NProgress.done() 
+   } else {
+     // 用户登录成功之后，每次点击路由都进行了角色的判断;
+     if (store.getters.roles.length === 0) {
+       let token = getToken('Token');
+       getUserInfo({"token":token}).then().then(res => { // 根据token拉取用户信息
+         let userList = res.data.userList;
+         store.commit("SET_ROLES",userList.roles);
+         store.commit("SET_NAME",userList.name);
+         store.commit("SET_AVATAR",userList.avatar);
+         store.dispatch('GenerateRoutes', { "roles":userList.roles }).then(() => { // 根据roles权限生成可访问的路由表
+           router.addRoutes(store.getters.addRouters) // 动态添加可访问权限路由表
+           next({ ...to, replace: true }) // hack方法 确保addRoutes已完成
+         })
+       }).catch((err) => {
+         store.dispatch('LogOut').then(() => {
+           Vue._message.error(err || 'Verification failed, please login again')
+           next({ path: '/' })
+         })
+       })
+     } else {
+       // 没有动态改变权限的需求可直接next() 删除下方权限判断 ↓
+       if (hasPermission(store.getters.roles, to.meta.roles)) {
+         next()//
+       } else {
+         next({ path: '/401', replace: true, query: { noGoBack: true }})
+       }
+     }
+   }
+ } else {
+   if (whiteList.indexOf(to.path) !== -1) {
+     // 点击退出时,会定位到这里
+     next()
+   } else {
+     next('/login')
+     NProgress.done()
+   }
+ }
 })
 // 路由 退出的 钩子
 router.afterEach((to, from) => {
-  // ...
+  NProgress.done() // 结束Progress
+  setTimeout(() => {
+    const browserHeaderTitle = store.getters.browserHeaderTitle
+    setTitle(browserHeaderTitle)
+  }, 0)
 
 })
 

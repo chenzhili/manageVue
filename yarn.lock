@@ -3664,6 +3664,13 @@ ecc-jsbn@~0.1.1:
     jsbn "~0.1.0"
     safer-buffer "^2.1.0"
 
+echarts@^4.7.0:
+  version "4.7.0"
+  resolved "https://registry.npm.taobao.org/echarts/download/echarts-4.7.0.tgz#5b3875a4c2f91e3929425fabab9eace7e4098b3f"
+  integrity sha1-Wzh1pML5HjkpQl+rq56s5+QJiz8=
+  dependencies:
+    zrender "4.3.0"
+
 editorconfig@^0.15.3:
   version "0.15.3"
   resolved "https://registry.npm.taobao.org/editorconfig/download/editorconfig-0.15.3.tgz#bef84c4e75fb8dcb0ce5cee8efd51c15999befc5"
@@ -8002,6 +8009,11 @@ qs@6.7.0:
   resolved "https://registry.npm.taobao.org/qs/download/qs-6.7.0.tgz#41dc1a015e3d581f1621776be31afb2876a9b1bc"
   integrity sha1-QdwaAV49WB8WIXdr4xr7KHapsbw=
 
+qs@^6.9.3:
+  version "6.9.3"
+  resolved "https://registry.npm.taobao.org/qs/download/qs-6.9.3.tgz?cache=0&sync_timestamp=1585168614364&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fqs%2Fdownload%2Fqs-6.9.3.tgz#bfadcd296c2d549f1dffa560619132c977f5008e"
+  integrity sha1-v63NKWwtVJ8d/6VgYZEyyXf1AI4=
+
 qs@~6.5.2:
   version "6.5.2"
   resolved "https://registry.npm.taobao.org/qs/download/qs-6.5.2.tgz#cb3ae806e8740444584ef154ce8ee98d403f3e36"
@@ -10420,3 +10432,8 @@ yorkie@^2.0.0:
     is-ci "^1.0.10"
     normalize-path "^1.0.0"
     strip-indent "^2.0.0"
+
+zrender@4.3.0:
+  version "4.3.0"
+  resolved "https://registry.npm.taobao.org/zrender/download/zrender-4.3.0.tgz#9f056121b20bbae44414d287bf6a119ff7042661"
+  integrity sha1-nwVhIbILuuREFNKHv2oRn/cEJmE=
