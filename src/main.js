@@ -24,8 +24,6 @@ import '@/directive/permission'
 // i18n国际化
 import i18n from "@/lang";
 
-import 'cps/iconSvg'
-
 Vue.config.productionTip = false
 
 new Vue({

@@ -1,6 +1,6 @@
 import { permission } from './constJSON'
-import { asyncRouterMap, constantRouterMap } from '@/router'
-
+/* 这里执行的时候顺序有问题，这里 拿不到值 */
+import { asyncRouterMap, constantRouterMap } from '@/router/index'
 
 /**
  * 通过meta.role判断是否与当前用户权限匹配
@@ -35,7 +35,7 @@ function filterAsyncRouter(asyncRouterMap, roles) {
     })
     return accessedRouters
 }
-
+console.log(constantRouterMap);
 
 export default {
     state: {
@@ -54,11 +54,11 @@ export default {
     },
     mutations: {
         [permission.mutations.SET_ROUTERS]: (state, routers) => {
-            state.addRouters = routers // 权限路由
-            state.routers = constantRouterMap.concat(routers) // 总路由
+            state.addRouters = Object.assign([], routers) // 权限路由
+            state.routers = Object.assign([], constantRouterMap.concat(routers)) // 总路由
         },
         [permission.mutations.CLICK_INNER_LEFT_MENU]: (state, data) => { // titleList:arr
-            state.topRouters = data.titleList;
+            state.topRouters = Object.assign([], data.titleList);
         },
         [permission.mutations.CLICK_TOP_MENU]: (state, data) => {
             state.topTitle = data.title

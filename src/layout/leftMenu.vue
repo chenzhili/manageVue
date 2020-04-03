@@ -83,7 +83,9 @@ export default {
     ...mapGetters(["permission_routers", "isCollapse", "sidebar", "menuIndex"])
   },
   created() {},
-  mounted() {},
+  mounted() {
+    console.log(this.permission_routers);
+  },
   methods: {
     getIindex(citem, item, cindex) {
       return citem.meta.titleList

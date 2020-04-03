@@ -24,7 +24,7 @@ export default {
     },
     mutations: {
         [user.mutations.SET_ROLES]: (state, roles) => {
-            state.roles = roles
+            state.roles = Object.assign([], roles);
         },
         [user.mutations.SET_BROWSERHEADERTITLE]: (state, action) => {
             state.browserHeaderTitle = action.browserHeaderTitle

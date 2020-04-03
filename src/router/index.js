@@ -151,17 +151,19 @@ const router = new VueRouter({
 
 
 /* 真实的 权限加载的路由 */
-export const asyncRouterMap = resultRoutes(asyncLoadRoutes);
+export const asyncRouterMap = [...resultRoutes(asyncLoadRoutes)];
 
 /* 真实的 同步 路由 */
-const constantRouterMap = routesNews;
-export { constantRouterMap }
+export const constantRouterMap = [...routesNews];
+
+console.log(constantRouterMap);
+
 
 // 路由进入 的 钩子
 router.beforeEach((to, from, next) => {
   // 设置浏览器头部标题
   const browserHeaderTitle = to.meta.title
-  store.commit('SET_BROWSERHEADERTITLE', {
+  store.commit(user.mutations.SET_BROWSERHEADERTITLE, {
     browserHeaderTitle: browserHeaderTitle
   })
   console.log('before to');
@@ -175,21 +177,22 @@ router.beforeEach((to, from, next) => {
      // 用户登录成功之后，每次点击路由都进行了角色的判断;
      if (store.getters.roles.length === 0) {
        let token = getToken('Token');
-       getUserInfo({"token":token}).then().then(res => { // 根据token拉取用户信息
-         let userList = res.data.data.userList;
-         store.commit("SET_ROLES",userList.roles);
-         store.commit("SET_NAME",userList.name);
-         store.commit("SET_AVATAR",userList.avatar);
-         store.dispatch('GenerateRoutes', { "roles":userList.roles }).then(() => { // 根据roles权限生成可访问的路由表
-           router.addRoutes(store.getters.addRouters) // 动态添加可访问权限路由表
-           next({ ...to, replace: true }) // hack方法 确保addRoutes已完成
-         })
-       }).catch((err) => {
-         store.dispatch(user.actions.LogOut).then(() => {
-           Vue._message.error(err || 'Verification failed, please login again')
-           next({ path: '/' })
-         })
-       })
+      //  getUserInfo({"token":token}).then().then(res => { // 根据token拉取用户信息
+      //    let userList = res.data.data.userList;
+      //    store.commit(user.mutations.SET_ROLES, userList.roles);
+      //    store.commit(user.mutations.SET_NAME, userList.name);
+      //    store.commit(user.mutations.SET_AVATAR, userList.avatar);
+      //    store.dispatch(permission.actions.GENERATE_ROUTES, { "roles":userList.roles }).then(() => { // 根据roles权限生成可访问的路由表
+      //      //router.addRoutes(store.getters.addRouters) // 动态添加可访问权限路由表
+      //      next({ ...to, replace: true }) // hack方法 确保addRoutes已完成
+      //    })
+      //  }).catch((err) => {
+      //    store.dispatch(user.actions.LogOut).then(() => {
+      //      Vue._message.error(err || 'Verification failed, please login again')
+      //      next({ path: '/' })
+      //    })
+      //  })
+      next();
      } else {
        // 没有动态改变权限的需求可直接next() 删除下方权限判断 ↓
        if (hasPermission(store.getters.roles, to.meta.roles)) {

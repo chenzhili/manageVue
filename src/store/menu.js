@@ -27,7 +27,7 @@ export default {
            state.sidebar.opened = !state.sidebar.opened
         },
         [menu.mutations.INIT_LEFT_MENU] (state) {  
-            // state.sidebar = state.sidebar
+            state.sidebar = Object.assign({}, state.sidebar)
         },
         [menu.mutations.SET_LEFT_COLLAPSE] (state) {  
             state.isCollapse = !state.isCollapse 

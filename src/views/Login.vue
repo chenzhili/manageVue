@@ -5,7 +5,7 @@
         <div class="titleArea rflex">
           <img class="logo" :src="logo" alt="小爱admin" />
           <span class="title">
-            小爱
+            登录
             <i>Admin</i>
           </span>
         </div>
