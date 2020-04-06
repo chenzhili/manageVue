@@ -10,6 +10,7 @@ export default Object.freeze({
        menuIndex: 'menuIndex'
     },
     mutations: {
+        INIT_ROUTES: 'INIT_ROUTES',
         SET_ROUTERS: 'SET_ROUTERS',
         CLICK_INNER_LEFT_MENU: 'CLICK_INNER_LEFT_MENU',
         CLICK_TOP_MENU: 'CLICK_TOP_MENU'

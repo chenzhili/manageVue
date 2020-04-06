@@ -10,7 +10,7 @@ function hasPermission (type) {
 export default {
   // inserted函数：当被绑定的元素插入到 DOM 中时……
   inserted(el, binding, vnode) {
-    console.log(el, binding, vnode);
+    // console.log(el, binding, vnode);
     const { value } = binding  // 获取指令绑定的值;
 
     // 测试

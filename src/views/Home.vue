@@ -47,10 +47,10 @@ export default {
     };
     const data = await this.$http.moduleA.getList(cofnig, this.cacelGetListReqIns);
     this.list = data.data.data.slice(0, 11);
-    console.log(this.list);
+    // console.log(this.list);
     
     const list = await this.$http.moduleA.getMoney();
-    console.log(list);
+    // console.log(list);
   }
 };
 </script>

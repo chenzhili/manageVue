@@ -2,6 +2,8 @@ import { permission } from './constJSON'
 /* 这里执行的时候顺序有问题，这里 拿不到值 */
 import { asyncRouterMap, constantRouterMap } from '@/router/index'
 
+console.log('permission核心加载');
+
 /**
  * 通过meta.role判断是否与当前用户权限匹配
  * @param roles
@@ -35,7 +37,6 @@ function filterAsyncRouter(asyncRouterMap, roles) {
     })
     return accessedRouters
 }
-console.log(constantRouterMap);
 
 export default {
     state: {
@@ -53,6 +54,11 @@ export default {
         [permission.getters.menuIndex]: state => state.menuIndex, // 顶部菜单的index
     },
     mutations: {
+        [permission.mutations.INIT_ROUTES] (state, routes) {
+            console.log('这里吗', routes);
+            // 这里 用 Object.assign 有问题，可能 是有 这个 路由 是 由于 vueRouter 把它进行包装，内部状态在外部 让他发生了变化；
+            state.routers = JSON.parse(JSON.stringify(routes))
+        },
         [permission.mutations.SET_ROUTERS]: (state, routers) => {
             state.addRouters = Object.assign([], routers) // 权限路由
             state.routers = Object.assign([], constantRouterMap.concat(routers)) // 总路由

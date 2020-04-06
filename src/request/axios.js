@@ -17,6 +17,8 @@ import { parents } from '../store/constJSON'
 
 import { errorRequest } from './baseURL'
 
+console.log('请求运行', store);
+
 /* axios 的理解
     1、可以先做默认 设置 ，来代替 每个 请求的 配置；
         这里就出现了一个 优先级：
@@ -99,7 +101,7 @@ instance.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlenco
 function changeNetWorkStatus(boolean) {
     boolean = boolean == undefined ? true : boolean;
     const network = store.state.network;
-    console.log(network);
+    // console.log(network);
     if (boolean && network === false) {
         store.commit(parents.mutations.CHANGE_NETWORK, boolean);
     }

@@ -99,6 +99,7 @@ const config = [
         keyword: 'home',
         query: ['id', 'test'],
         async: false,
+        hidden: true,
         // 不存在 async 或者 async = true
         components: {
             default: () => import(/*  */'@/views/Home.vue'),
@@ -128,15 +129,30 @@ const config = [
         exact: true,
         component:  () => import(/*  */'@/views/Test.vue'),
         redirect: "/test/child1",
+        meta: {
+            title: '首页',
+            icon: 'icondashboard',
+            routerType: 'leftmenu'
+        },
         children: [
             {
                 keyword: 'child1',
                 component: 'About.vue',
-                async: false
+                async: false,
+                meta: {
+					title: '首页',
+					icon: 'icondashboard',
+					routerType: 'leftmenu'
+				},
             },{
                 keyword: 'child2',
                 component: 'Home.vue',
-                async: false
+                async: false,
+                meta: {
+					title: '首页',
+					icon: 'icondashboard',
+					routerType: 'leftmenu'
+				},
             },
         ]
     }
@@ -147,6 +163,11 @@ export const asyncLoadRoutes = [
     {
         keyword: 'about',
         component: () => import(/*  */'@/views/About.vue'),
+        meta: {
+            title: '首页',
+            icon: 'icondashboard',
+            routerType: 'leftmenu'
+        },
         // async: false,
     },
 ]

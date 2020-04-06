@@ -30,7 +30,6 @@ requireModule.keys().forEach(rc => {
   moduleName = rc.replace(nameReg, '$1');
   if (reg.test(rc) === false && rc.indexOf('constJSON') === -1) {
     module = requireModule(rc).default;
-    console.log("执行");
     modules[moduleName] = module;
   }
 })

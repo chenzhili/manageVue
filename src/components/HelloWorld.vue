@@ -8,7 +8,7 @@
 import { mapState, mapMutations, createNamespacedHelpers } from 'vuex'
 import { parents } from '../store/constJSON'
 const { mapMutations:amapMutations } = createNamespacedHelpers("aModule");
-console.log(amapMutations(['aaa'])); 
+// console.log(amapMutations(['aaa'])); 
 export default {
   name: "HelloWorld",
   props: ["id"],
@@ -32,13 +32,12 @@ export default {
       if (this.check() && this.$store.state.list.length < 3) {
         this.$store.commit(parents.mutations.ADD_TO_CART, this.id);
       } else {
-        console.log("执行吗");
         this.$router.push({ name: "About" });
       }
     }
   },
   mounted() {
-    console.log('对应store的值', this.$store);
+    // console.log('对应store的值', this.$store);
   }
 };
 </script>

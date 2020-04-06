@@ -10,7 +10,7 @@ export default {
     },
     actions:{
         async [bModule.actions.INCREMENT_ACTION_A](context){
-            console.log(context);
+            // console.log(context);
         }
     },
     getters:{}

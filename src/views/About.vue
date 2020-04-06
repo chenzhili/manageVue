@@ -27,7 +27,7 @@
   形成曲面：曲面需要两个自变量，一个因变量，且三个变量的数据均须为矩阵，不能为单列或者单行的数组。这句话没理解到
  */
 import { AIMarker } from "vue-picture-bd-marker";
-console.log(AIMarker);
+// console.log(AIMarker);
 export default {
   components: { "ui-marker": AIMarker },
   data() {

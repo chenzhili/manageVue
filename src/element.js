@@ -94,6 +94,7 @@ import {
     Card,
 } from 'element-ui';
 
+console.log('element加载');
 /* 
 
 Vue.use(Autocomplete);

@@ -2,10 +2,12 @@ import Vue from 'vue'
 import '@/element';
 import '@/registerServiceWorker'
 
-import App from '@/App.vue'
 import '@/request'
 
+console.log('router加载');
 import router from '@/router'
+
+console.log('store加载');
 import store from '@/store'
 
 // mixin
@@ -23,6 +25,12 @@ import '@/directive/permission'
 
 // i18n国际化
 import i18n from "@/lang";
+
+
+// 测试循环引用
+// import '@/whileTest/main'
+
+import App from '@/App.vue'
 
 Vue.config.productionTip = false
 

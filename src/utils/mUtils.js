@@ -93,7 +93,7 @@ export const showMessage = () =>{
  * 读取base64
  */
 export const  readFile = file => {
-    console.log(file)
+    // console.log(file)
     //var file = this.files[0];
     //判断是否是图片类型
     if (!/image\/\w+/.test(file.raw.type)) {

@@ -14,7 +14,7 @@ export default {
     },
     actions:{
         async [aModule.actions.INCREMENT_ACTION_A](context){
-            console.log(context);
+            // console.log(context);
         }
     },
     getters:{}

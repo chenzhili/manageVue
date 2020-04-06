@@ -5,8 +5,6 @@ import axios from 'axios'
 import { mount, shallowMount, createLocalVue } from '@vue/test-utils'
 import Home from '@/src/vies/Home.vue'
 
-console.log(Home);
-
 jest.mock(axios);
 
 let localVue = null;

@@ -11,8 +11,10 @@
   </div>
 </template>
 <script>
-import { mapState } from "vuex";
-
+import { mapState, mapMutations } from "vuex";
+import {permission} from '@/store/constJSON'
+import { constantRouterMap } from '@/router/index'
+console.log(permission);
 export default {
   data() {
     return {};
@@ -21,12 +23,13 @@ export default {
     ...mapState(["network"])
   },
   methods: {
+    ...mapMutations([permission.mutations.INIT_ROUTES]),
     onRefresh() {
       this.$router.replace("/refresh");
     }
   },
   mounted() {
-    console.log(this.network);
+    this[permission.mutations.INIT_ROUTES](constantRouterMap);
   }
 };
 </script>

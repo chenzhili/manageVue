@@ -11,6 +11,7 @@ import store from '../store';
 import { permission, user } from '../store/constJSON'
 import User from "@/request/moduleAPI/user";
 
+console.log('router核心加载');
 const {getUserInfo} = User;
 import {
   setTitle
@@ -109,6 +110,12 @@ function recurseRouter(targets, result, root) {
     if (type(target.redirect === 'string')) {
       tempObj.redirect = target.redirect;
     }
+    if (type(target.meta === 'object')) {
+      tempObj.meta = target.meta;
+    }
+    if (type(target.hidden === 'boolean')) {
+      tempObj.hidden = target.hidden;
+    }
 
     result.push(tempObj);
   });
@@ -121,30 +128,33 @@ const routesNews = resultRoutes(config);
 routesNews.unshift({
   path: '/',
   component: Layout,
-  redirect: '/index/index'
+  redirect: '/index/index',
+  hidden: true
 });
 
 /* 断网的刷新页面 */
 routesNews.push({
   path: '/refresh',
   name: 'Refresh',
-  component: () => import('@/views/errorPage/NoNetWork.vue')
+  component: () => import('@/views/errorPage/NoNetWork.vue'),
+  hidden: true
 });
 
 /* 访问权限页面 */
 routesNews.push({
   path: '/401',
   name: '401',
-  component: () => import('@/views/errorPage/401.vue')
+  component: () => import('@/views/errorPage/401.vue'),
+  hidden: true
 });
 /* 页面不存在 */
 routesNews.push({
   path: '/404',
   name: '404',
-  component: () => import('@/views/errorPage/404.vue')
+  component: () => import('@/views/errorPage/404.vue'),
+  hidden: true
 });
 
-console.log(routesNews);
 const router = new VueRouter({
   routes: routesNews
 });
@@ -155,9 +165,6 @@ export const asyncRouterMap = [...resultRoutes(asyncLoadRoutes)];
 
 /* 真实的 同步 路由 */
 export const constantRouterMap = [...routesNews];
-
-console.log(constantRouterMap);
-
 
 // 路由进入 的 钩子
 router.beforeEach((to, from, next) => {
